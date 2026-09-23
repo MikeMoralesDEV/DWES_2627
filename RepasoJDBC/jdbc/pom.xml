@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>jdbc</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!--
+        Java 21 permite utilizar características modernas del lenguaje,
+        como los text blocks empleados en las consultas SQL.
+    -->
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!--
+        Una dependencia es una biblioteca externa que el proyecto necesita
+        para compilar o ejecutarse. En este caso necesitamos el controlador
+        JDBC de MariaDB para que Java pueda comunicarse con MariaDB.
+    -->
+    <dependencies>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.5.6</version>
+
+            <!--
+                "system" indica que Maven no descarga la biblioteca desde un
+                repositorio: la toma de una ruta del propio proyecto.
+                ${project.basedir} representa la carpeta que contiene este
+                pom.xml. Maven la resuelve internamente como una ruta completa
+                del ordenador actual, pero la expresión es relativa al
+                proyecto: por eso ${project.basedir}/lib/... sí es portable.
+                Al copiar el proyecto, Maven calcula de nuevo esa ruta en el
+                nuevo equipo y busca el JAR dentro de su propia carpeta lib/.
+            -->
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/mariadb-java-client-3.5.6.jar</systemPath>
+
+            <!--
+                Alternativa recomendada si se permite descargar la dependencia
+                desde el repositorio global de Maven (normalmente Maven
+                Central). En ese caso se usaría esta configuración:
+
+                <dependency>
+                    <groupId>org.mariadb.jdbc</groupId>
+                    <artifactId>mariadb-java-client</artifactId>
+                    <version>3.5.6</version>
+                </dependency>
+
+                Se eliminarían "system" y "systemPath"; Maven descargaría
+                automáticamente el JAR y lo guardaría en el repositorio local
+                de Maven del equipo. El problema aparecería si escribiéramos
+                directamente una ruta absoluta, por ejemplo
+                C:\Usuarios\Miguel\lib\mariadb-java-client.jar. Esa ruta solo
+                existe en ese ordenador y normalmente falla al mover el
+                proyecto a otro equipo.
+            -->
+        </dependency>
+
+        <!--
+            Esta dependencia solo se utiliza para las pruebas de src/test.
+            No forma parte de la aplicación cuando se ejecuta Main.
+        -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
