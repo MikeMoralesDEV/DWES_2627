@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Log4j 2 busca por defecto un archivo llamado log4j2.xml en los recursos
+    de la aplicación. Maven copia este archivo al classpath al compilar.
+-->
+<Configuration status="WARN">
+    <!--
+        Los appenders son los destinos de los mensajes. En este ejemplo se
+        envían a la consola y a un archivo llamado aplicacion.log.
+    -->
+    <Appenders>
+        <Console name="Consola" target="SYSTEM_OUT">
+            <!--
+                %d: fecha y hora; %-5level: nivel alineado; %c{1}: clase;
+                %msg: mensaje; %n: salto de línea.
+            -->
+            <PatternLayout pattern="%d{HH:mm:ss} %-5level [%c{1}] - %msg%n"/>
+        </Console>
+
+        <File name="Archivo" fileName="aplicacion.log" append="true">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level [%c] - %msg%n"/>
+        </File>
+    </Appenders>
+
+    <!--
+        El nivel INFO permite INFO, WARN, ERROR y FATAL.
+        TRACE y DEBUG quedan ocultos. Cambia INFO por DEBUG o TRACE para
+        mostrar más detalle durante el desarrollo.
+    -->
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Consola"/>
+            <AppenderRef ref="Archivo"/>
+        </Root>
+    </Loggers>
+</Configuration>

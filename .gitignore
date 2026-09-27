@@ -1,1 +1,4 @@
 .idea/
+*.md
+!readme.md
+*criterios*
